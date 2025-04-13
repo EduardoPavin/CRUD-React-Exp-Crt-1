@@ -42,7 +42,19 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
     if (!carData.ano.trim()) newErrors.ano = 'Campo obrigatório';
     else if (!/^\d{4}$/.test(carData.ano)) newErrors.ano = 'Ano deve ter 4 dígitos numéricos';
     if (!carData.cor.trim()) newErrors.cor = 'Campo obrigatório';
-    if (!carData.placa.trim()) newErrors.placa = 'Campo obrigatório';
+    if (!carData.placa.trim()) {
+      newErrors.placa = 'Campo obrigatório';
+    } else {
+      const placa = carData.placa.toUpperCase();
+      const formatoAntigo = /^[A-Z]{3}[0-9]{4}$/;
+      const formatoMercosul = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/;
+
+      if (!formatoAntigo.test(placa) && !formatoMercosul.test(placa)) {
+        newErrors.placa = 'Placa inválida (ex: ABC1234 ou BRA1E23)';
+      }
+    }
+
+
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -92,8 +104,14 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
             required
             error={!!errors.ano}
             helperText={errors.ano}
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            type="number"
+            inputProps={{
+              min: 1000,
+              max: 9999,
+              inputMode: 'numeric',
+            }}
           />
+
           <TextField
             label="Cor"
             name="cor"
@@ -115,7 +133,13 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
             required
             error={!!errors.placa}
             helperText={errors.placa}
+            inputProps={{
+              maxLength: 7,
+              style: { textTransform: 'uppercase' },
+            }}
           />
+
+
           <Button
             variant="contained"
             fullWidth
