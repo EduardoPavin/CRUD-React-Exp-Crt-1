@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Modal,
-  Box,
-  Typography,
-  TextField,
-  Button,
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Modal, Box, Typography, TextField, Button } from '@mui/material';
 import './ModalCreate.css';
 
 const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
@@ -16,7 +10,6 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
     cor: '',
     placa: '',
   });
-
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -36,7 +29,6 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
 
   const validate = () => {
     const newErrors = {};
-
     if (!carData.modelo.trim()) newErrors.modelo = 'Campo obrigatório';
     if (!carData.marca.trim()) newErrors.marca = 'Campo obrigatório';
     if (!carData.ano.trim()) newErrors.ano = 'Campo obrigatório';
@@ -48,19 +40,16 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
       const placa = carData.placa.toUpperCase();
       const formatoAntigo = /^[A-Z]{3}[0-9]{4}$/;
       const formatoMercosul = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/;
-
       if (!formatoAntigo.test(placa) && !formatoMercosul.test(placa)) {
         newErrors.placa = 'Placa inválida (ex: ABC1234 ou BRA1E23)';
       }
     }
-
-
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!validate()) return;
     onSave(carData);
   };
@@ -105,13 +94,8 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
             error={!!errors.ano}
             helperText={errors.ano}
             type="number"
-            inputProps={{
-              min: 1000,
-              max: 9999,
-              inputMode: 'numeric',
-            }}
+            inputProps={{ min: 1000, max: 9999 }}
           />
-
           <TextField
             label="Cor"
             name="cor"
@@ -138,8 +122,6 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
               style: { textTransform: 'uppercase' },
             }}
           />
-
-
           <Button
             variant="contained"
             fullWidth

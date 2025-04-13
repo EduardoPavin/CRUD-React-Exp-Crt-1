@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import CarDisplay from './_common/car-display/CarDisplay';
-import Wrapper from './_common/wrapper/Wrapper'
-import ModalCreate from './_common/modal-create/ModalCreate'
+import Wrapper from './_common/wrapper/Wrapper';
+import ModalCreate from './_common/modal-create/ModalCreate';
+
+const API_BASE_URL = 'http://localhost:4000';
 
 const App = () => {
   const [open, setOpen] = useState(false);
   const [cars, setCars] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
 
-  const handleSave = (newCar) => {
-    if (editingIndex !== null) {
-      const updated = [...cars];
-      updated[editingIndex] = newCar;
-      setCars(updated);
-      setEditingIndex(null);
-    } else {
-      setCars([...cars, newCar]);
+  const fetchCars = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/cars`);
+      setCars(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar carros:", error);
     }
-    setOpen(false);
+  };
+
+  useEffect(() => {
+    fetchCars();
+  }, []);
+
+  const handleSave = async (newCar) => {
+    try {
+      if (editingIndex !== null) {
+        const id = cars[editingIndex].id;
+        await axios.put(`${API_BASE_URL}/cars/${id}`, newCar);
+      } else {
+        await axios.post(`${API_BASE_URL}/cars`, newCar);
+      }
+      window.location.reload();
+    } catch (error) {
+      console.error("Erro ao salvar carro:", error);
+    }
   };
 
   const handleEdit = (index) => {
@@ -25,10 +43,15 @@ const App = () => {
     setOpen(true);
   };
 
-  const handleDelete = (index) => {
-    const updated = [...cars];
-    updated.splice(index, 1);
-    setCars(updated);
+  const handleDelete = async (index) => {
+    try {
+      const carToDelete = cars[index];
+      if (!carToDelete) return;
+      await axios.delete(`${API_BASE_URL}/cars/${carToDelete.id}`);
+      window.location.reload();
+    } catch (error) {
+      console.error("Erro ao excluir carro:", error);
+    }
   };
 
   return (
