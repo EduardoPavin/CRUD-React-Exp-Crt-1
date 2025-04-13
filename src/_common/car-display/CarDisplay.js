@@ -23,7 +23,7 @@ const CarDisplay = ({ cars, onEdit, onDelete }) => {
                 borderRadius: 2,
               }}
             >
-              <Typography variant="h6" sx={{ color: 'white', textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ color: 'black', textAlign: 'center' }}>
                 Nenhum carro cadastrado.
               </Typography>
             </Box>

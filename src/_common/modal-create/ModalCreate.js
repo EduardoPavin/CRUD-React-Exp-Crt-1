@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   Box,
@@ -6,9 +6,9 @@ import {
   TextField,
   Button,
 } from '@mui/material';
-import './ModalCreate.css'; // importa o CSS separado
+import './ModalCreate.css';
 
-const ModalCreate = ({ open, handleClose }) => {
+const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
   const [carData, setCarData] = useState({
     modelo: '',
     marca: '',
@@ -17,13 +17,40 @@ const ModalCreate = ({ open, handleClose }) => {
     placa: '',
   });
 
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setCarData(initialData || {
+      modelo: '',
+      marca: '',
+      ano: '',
+      cor: '',
+      placa: '',
+    });
+    setErrors({});
+  }, [initialData, open]);
+
   const handleChange = (e) => {
     setCarData({ ...carData, [e.target.name]: e.target.value });
   };
 
+  const validate = () => {
+    const newErrors = {};
+
+    if (!carData.modelo.trim()) newErrors.modelo = 'Campo obrigatório';
+    if (!carData.marca.trim()) newErrors.marca = 'Campo obrigatório';
+    if (!carData.ano.trim()) newErrors.ano = 'Campo obrigatório';
+    else if (!/^\d{4}$/.test(carData.ano)) newErrors.ano = 'Ano deve ter 4 dígitos numéricos';
+    if (!carData.cor.trim()) newErrors.cor = 'Campo obrigatório';
+    if (!carData.placa.trim()) newErrors.placa = 'Campo obrigatório';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = () => {
-    console.log(carData);
-    handleClose();
+    if (!validate()) return;
+    onSave(carData);
   };
 
   return (
@@ -33,12 +60,62 @@ const ModalCreate = ({ open, handleClose }) => {
           Cadastro de Carro
         </Typography>
         <form className="flex flex-col">
-          <TextField label="Modelo" name="modelo" value={carData.modelo} onChange={handleChange} fullWidth margin="dense" />
-          <TextField label="Marca" name="marca" value={carData.marca} onChange={handleChange} fullWidth margin="dense" />
-          <TextField label="Ano" name="ano" value={carData.ano} onChange={handleChange} fullWidth margin="dense" />
-          <TextField label="Cor" name="cor" value={carData.cor} onChange={handleChange} fullWidth margin="dense" />
-          <TextField label="Placa" name="placa" value={carData.placa} onChange={handleChange} fullWidth margin="dense" />
-
+          <TextField
+            label="Modelo"
+            name="modelo"
+            value={carData.modelo}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            required
+            error={!!errors.modelo}
+            helperText={errors.modelo}
+          />
+          <TextField
+            label="Marca"
+            name="marca"
+            value={carData.marca}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            required
+            error={!!errors.marca}
+            helperText={errors.marca}
+          />
+          <TextField
+            label="Ano"
+            name="ano"
+            value={carData.ano}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            required
+            error={!!errors.ano}
+            helperText={errors.ano}
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+          />
+          <TextField
+            label="Cor"
+            name="cor"
+            value={carData.cor}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            required
+            error={!!errors.cor}
+            helperText={errors.cor}
+          />
+          <TextField
+            label="Placa"
+            name="placa"
+            value={carData.placa}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            required
+            error={!!errors.placa}
+            helperText={errors.placa}
+          />
           <Button
             variant="contained"
             fullWidth
@@ -48,9 +125,6 @@ const ModalCreate = ({ open, handleClose }) => {
             Salvar
           </Button>
         </form>
-
-
-
       </Box>
     </Modal>
   );
