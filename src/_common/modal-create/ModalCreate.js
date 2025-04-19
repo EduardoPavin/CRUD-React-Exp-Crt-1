@@ -31,8 +31,11 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
     const newErrors = {};
     if (!carData.model.trim()) newErrors.model = 'Campo obrigatório';
     if (!carData.brand.trim()) newErrors.brand = 'Campo obrigatório';
-    if (!carData.year.trim()) newErrors.year = 'Campo obrigatório';
-    else if (!/^\d{4}$/.test(carData.year)) newErrors.year = 'Ano deve ter 4 dígitos numéricos';
+    if (!String(carData.year).trim()) {
+      newErrors.year = 'Campo obrigatório';
+    } else if (!/^\d{4}$/.test(String(carData.year).trim())) {
+      newErrors.year = 'Ano deve ter 4 dígitos numéricos';
+    }
     if (!carData.color.trim()) newErrors.color = 'Campo obrigatório';
     if (!carData.plate.trim()) {
       newErrors.plate = 'Campo obrigatório';
