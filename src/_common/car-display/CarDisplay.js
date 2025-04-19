@@ -88,11 +88,11 @@ const CarDisplay = ({ onEdit, onDelete }) => {
           }}
         >
           <Box>
-            <Typography variant="subtitle1"><strong>Modelo:</strong> {car.modelo}</Typography>
-            <Typography variant="subtitle1"><strong>Marca:</strong> {car.marca}</Typography>
-            <Typography variant="subtitle1"><strong>Ano:</strong> {car.ano}</Typography>
-            <Typography variant="subtitle1"><strong>Cor:</strong> {car.cor}</Typography>
-            <Typography variant="subtitle1"><strong>Placa:</strong> {car.placa}</Typography>
+            <Typography variant="subtitle1"><strong>Modelo:</strong> {car.model}</Typography>
+            <Typography variant="subtitle1"><strong>Marca:</strong> {car.brand}</Typography>
+            <Typography variant="subtitle1"><strong>Ano:</strong> {car.year}</Typography>
+            <Typography variant="subtitle1"><strong>Cor:</strong> {car.color}</Typography>
+            <Typography variant="subtitle1"><strong>Placa:</strong> {car.plate}</Typography>
           </Box>
           <Box
             sx={{

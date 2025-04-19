@@ -4,21 +4,21 @@ import './ModalCreate.css';
 
 const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
   const [carData, setCarData] = useState({
-    modelo: '',
-    marca: '',
-    ano: '',
-    cor: '',
-    placa: '',
+    model: '',
+    brand: '',
+    year: '',
+    color: '',
+    plate: '',
   });
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setCarData(initialData || {
-      modelo: '',
-      marca: '',
-      ano: '',
-      cor: '',
-      placa: '',
+      model: '',
+      brand: '',
+      year: '',
+      color: '',
+      plate: '',
     });
     setErrors({});
   }, [initialData, open]);
@@ -29,19 +29,19 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!carData.modelo.trim()) newErrors.modelo = 'Campo obrigatório';
-    if (!carData.marca.trim()) newErrors.marca = 'Campo obrigatório';
-    if (!carData.ano.trim()) newErrors.ano = 'Campo obrigatório';
-    else if (!/^\d{4}$/.test(carData.ano)) newErrors.ano = 'Ano deve ter 4 dígitos numéricos';
-    if (!carData.cor.trim()) newErrors.cor = 'Campo obrigatório';
-    if (!carData.placa.trim()) {
-      newErrors.placa = 'Campo obrigatório';
+    if (!carData.model.trim()) newErrors.model = 'Campo obrigatório';
+    if (!carData.brand.trim()) newErrors.brand = 'Campo obrigatório';
+    if (!carData.year.trim()) newErrors.year = 'Campo obrigatório';
+    else if (!/^\d{4}$/.test(carData.year)) newErrors.year = 'Ano deve ter 4 dígitos numéricos';
+    if (!carData.color.trim()) newErrors.color = 'Campo obrigatório';
+    if (!carData.plate.trim()) {
+      newErrors.plate = 'Campo obrigatório';
     } else {
-      const placa = carData.placa.toUpperCase();
+      const plate = carData.plate.toUpperCase();
       const formatoAntigo = /^[A-Z]{3}[0-9]{4}$/;
       const formatoMercosul = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/;
-      if (!formatoAntigo.test(placa) && !formatoMercosul.test(placa)) {
-        newErrors.placa = 'Placa inválida (ex: ABC1234 ou BRA1E23)';
+      if (!formatoAntigo.test(plate) && !formatoMercosul.test(plate)) {
+        newErrors.plate = 'Placa inválida (ex: ABC1234 ou BRA1E23)';
       }
     }
     setErrors(newErrors);
@@ -63,60 +63,60 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
         <form className="flex flex-col">
           <TextField
             label="Modelo"
-            name="modelo"
-            value={carData.modelo}
+            name="model"
+            value={carData.model}
             onChange={handleChange}
             fullWidth
             margin="dense"
             required
-            error={!!errors.modelo}
-            helperText={errors.modelo}
+            error={!!errors.model}
+            helperText={errors.model}
           />
           <TextField
             label="Marca"
-            name="marca"
-            value={carData.marca}
+            name="brand"
+            value={carData.brand}
             onChange={handleChange}
             fullWidth
             margin="dense"
             required
-            error={!!errors.marca}
-            helperText={errors.marca}
+            error={!!errors.brand}
+            helperText={errors.brand}
           />
           <TextField
             label="Ano"
-            name="ano"
-            value={carData.ano}
+            name="year"
+            value={carData.year}
             onChange={handleChange}
             fullWidth
             margin="dense"
             required
-            error={!!errors.ano}
-            helperText={errors.ano}
+            error={!!errors.year}
+            helperText={errors.year}
             type="number"
             inputProps={{ min: 1000, max: 9999 }}
           />
           <TextField
             label="Cor"
-            name="cor"
-            value={carData.cor}
+            name="color"
+            value={carData.color}
             onChange={handleChange}
             fullWidth
             margin="dense"
             required
-            error={!!errors.cor}
-            helperText={errors.cor}
+            error={!!errors.color}
+            helperText={errors.color}
           />
           <TextField
             label="Placa"
-            name="placa"
-            value={carData.placa}
+            name="plate"
+            value={carData.plate}
             onChange={handleChange}
             fullWidth
             margin="dense"
             required
-            error={!!errors.placa}
-            helperText={errors.placa}
+            error={!!errors.plate}
+            helperText={errors.plate}
             inputProps={{
               maxLength: 7,
               style: { textTransform: 'uppercase' },
