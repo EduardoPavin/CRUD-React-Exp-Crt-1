@@ -61,7 +61,7 @@ const ModalCreate = ({ open, handleClose, onSave, initialData }) => {
     <Modal open={open} onClose={handleClose}>
       <Box className="modal-box">
         <Typography variant="h6" className="mb-4 text-center">
-          Cadastro de Carro
+          {initialData ? 'Editar Carro' : 'Cadastro de Carro'}
         </Typography>
         <form className="flex flex-col">
           <TextField
