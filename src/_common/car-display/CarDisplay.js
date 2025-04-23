@@ -1,41 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Box, Typography, Button, Paper } from '@mui/material';
-import axios from 'axios';
 
-const CarDisplay = ({ onEdit, onDelete }) => {
-  const [cars, setCars] = useState([]);
-  const [error, setError] = useState(null);
-
-  const API_BASE_URL = 'http://localhost:4000';
-
-  useEffect(() => {
-    axios.get(`${API_BASE_URL}/cars`)
-      .then(response => {
-        setCars(response.data);
-      })
-      .catch(err => {
-        console.error("Erro ao buscar os carros:", err);
-        setError('Erro ao buscar os carros.');
-      });
-  }, []);
-
-  if (error) {
-    return (
-      <Box
-        sx={{
-          height: '70vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography variant="h6" sx={{ color: 'red', textAlign: 'center' }}>
-          {error}
-        </Typography>
-      </Box>
-    );
-  }
-
+const CarDisplay = ({ cars, onEdit, onDelete }) => {
   if (cars.length === 0) {
     return (
       <Box
@@ -58,7 +24,7 @@ const CarDisplay = ({ onEdit, onDelete }) => {
           </Typography>
         </Paper>
       </Box>
-    );      
+    );
   }
 
   return (
@@ -72,9 +38,9 @@ const CarDisplay = ({ onEdit, onDelete }) => {
         mb: 4,
       }}
     >
-      {cars.map((car, index) => (
+      {cars.map((car) => (
         <Paper
-          key={index}
+          key={car.id}
           elevation={3}
           sx={{
             p: 2,
@@ -105,7 +71,7 @@ const CarDisplay = ({ onEdit, onDelete }) => {
               size="small"
               variant="outlined"
               color="primary"
-              onClick={() => onEdit(index)}
+              onClick={() => onEdit(cars.indexOf(car))}
             >
               Editar
             </Button>
@@ -113,7 +79,7 @@ const CarDisplay = ({ onEdit, onDelete }) => {
               size="small"
               variant="outlined"
               color="error"
-              onClick={() => onDelete(index)}
+              onClick={() => onDelete(cars.indexOf(car))}
             >
               Excluir
             </Button>
