@@ -47,7 +47,7 @@ const App = () => {
         const { data } = await axios.post(`${API_BASE_URL}/cars`, newCar);
         setCars(prev => [...prev, data]);
       }
-      toast.success('Carro salvo com sucesso!');
+      toast.success('Carro salvo com sucesso');
       setOpen(false);
     } catch (error) {
       console.error("Erro ao salvar carro:", error);
